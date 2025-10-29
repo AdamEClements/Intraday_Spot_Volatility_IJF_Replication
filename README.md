@@ -13,3 +13,13 @@ Output for the 5-minute OK volatility is written to IBM_5minvol_Win.mat to use i
 5-minute OK volatility is laos stored in IBM_ok.csv
 
 ## In-sample and Figure 1
+
+intravol_model.m provides the full sample estimation results.
+
+intravol_model.m uses IBM_5minvol_Win.mat
+
+Writes out coefficient estimates (IBM_OLS_estimates.csv) and robust covariance matrix 
+(IBM_robust_scaled_covars.csv) to produce Figure 1
+
+These files are used in the R code in IBM_HAC_based_plots.qmd to generate Figure 1
+IBM_HAC_based_plots.qmd needs the dplyr readr libraries.
