@@ -105,3 +105,20 @@ IBM_6_multireg_fore_log.csv
 The same is done for the liGBM and LSTM files.
 
 To generate the results in Table 2: compare_log_forecasts.m is used
+
+## Overnight volatility and Table 4 and Figure 4
+
+intravol_model_noonight.m is used to generate the in-sample estimation results for the miHAR model 
+excluding overnight volatility.
+
+Writes out coefficient estimates (IBM_OLS_estimates.csv) and robust covariance matrix 
+(IBM_robust_scaled_covars.csv) to produce Figure 4
+
+These files are used in the R code in IBM_HAC_based_plots.qmd to generate Figure 4
+IBM_HAC_based_plots.qmd needs the dplyr readr libraries.
+
+forecasting_loop.m produces the miHAR* forecasts
+
+Forecasts are written out to IBM_fore_nonight.csv
+
+To generate the results in Table 4: compare_forecasts.m is used
