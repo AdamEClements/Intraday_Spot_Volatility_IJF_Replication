@@ -1,0 +1,108 @@
+---
+title: "IBM miHAR to liGBM loss ratios"
+author: "Daniel P. A. Preve"
+format: html
+---
+
+## Import
+
+```{r}
+library(dplyr)
+library(readr)
+
+loss_ratios <- read_csv("loss_ratios.csv")
+glimpse(loss_ratios)
+```
+
+## Wrangle
+
+```{r}
+loss_ratios <- loss_ratios |>
+  rename(MSE = mse_out, QLIKE = qlike_out) |>
+  mutate(Interval = 1:78)
+
+glimpse(loss_ratios)
+```
+
+## Visualize
+
+### Plot 1
+
+```{r}
+library(ggplot2)
+
+p_1 <- loss_ratios |>
+  ggplot(aes(x = Interval, y = MSE)) +
+  geom_point(color = "#56B4E9") +
+  geom_line(color = "#56B4E9") +
+  geom_smooth(method = "loess", se = FALSE, color = "black", size = 0.5) +
+  geom_hline(
+    yintercept = 1,
+    linetype = "dashed"
+  ) +
+  scale_x_continuous(
+    limits = c(0, 79),   
+    breaks = c(12, 24, 36, 48, 60, 72)  
+  ) +
+  scale_x_continuous(
+    limits = c(0, 79),  
+    breaks = c(12, 24, 36, 48, 60, 72)  
+  ) +
+  scale_y_continuous(
+    limits = c(0.6, 1.2),  
+    breaks = c(0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2)  
+  ) +
+  theme_minimal(base_size = 14) +
+  labs(
+    x = NULL,  
+    y = "MSE ratio"
+  )
+
+p_1
+```
+
+### Plot 2
+
+```{r}
+library(ggplot2)
+
+p_2 <- loss_ratios |>
+  ggplot(aes(x = Interval, y = QLIKE)) +
+  geom_point(color = "#B97FB4") +
+  geom_line(color = "#B97FB4") +
+  geom_smooth(method = "loess", se = FALSE, color = "black", size = 0.5) +
+  geom_hline(
+    yintercept = 1,
+    linetype = "dashed"
+  ) +
+  scale_x_continuous(
+    limits = c(0, 79),   
+    breaks = c(12, 24, 36, 48, 60, 72)  
+  ) +
+  scale_x_continuous(
+    limits = c(0, 79),  
+    breaks = c(12, 24, 36, 48, 60, 72)  
+  ) +
+  scale_y_continuous(
+    limits = c(0.6, 1.2),  
+    breaks = c(0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2)  
+  ) +
+  theme_minimal(base_size = 14) +
+  labs(
+    x = "Interval",  
+    y = "QLIKE ratio"
+  )
+
+p_2
+```
+
+### Combined Plots
+
+```{r}
+library(patchwork)
+
+combined_plot <- (p_1 / p_2)
+combined_plot
+```
+
+
