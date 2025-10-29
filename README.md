@@ -58,11 +58,11 @@ IBM_gbm_fore_log.py uses IBM_ok.csv and output is written IBM_gbm_fore_log.csv
 
 forecasting_log_loop_LSTM.m generates the log LSTM forecasts and output is written to IBM_lstm_fore_log.csv
 
-##Multi-step forecasts and Table 3
+## Multi-step forecasts and Table 3
 
 forecasting_loop_multistep.m is used to genertae the multi-step ahead forecasts for the miHAR and diHAR
 
-% Forecast horizon
+%Forecast horizon
 forwin = 2;
 
 sets the forecast horizon. For a 2-interval horizon, the output is IBM_2_multireg_fore.csv
@@ -71,7 +71,7 @@ gbm_rolling_multistep.py is used to generate the liGBM forecasts IBM_2_gbm_fore.
 
 Again change
 
-# Forecast horizon
+#Forecast horizon
 forwin = 2
 
 sets the forecast horizon
