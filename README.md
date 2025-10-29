@@ -81,9 +81,12 @@ forecasting_loop_LSTM_multistep.m is used to generate the LSTM forecasts
 Logarithmic models
 
 forecasting_log_loop_multistep.m generates the multi-step ahead forecasts for the log miHAR and diHAR
+
 % Forecast horizon
 forwin = 2;
+
 sets the forecast horizon.
+
 Written out to IBM_2_multireg_fore_log.csv
 
 gbm_rolling_multistep_log.py generates the multi-step ahead forecasts for the log liGBM forecasts IBM_2_gbm_fore_log.csv
