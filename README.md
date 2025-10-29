@@ -121,6 +121,8 @@ forecasting_loop.m produces the miHAR* forecasts
 
 Forecasts are written out to IBM_fore_nonight.csv
 
+To generate the results in Table 4: compare_forecasts.m is used
+
 ## Diurnal adjustment and Table 5
 
 forecasting_diurnal_loop.m produces forecasts based on diurnally adjusted volatility miHAR**
@@ -129,4 +131,12 @@ Output is written to IBM_mutlireg_di_fore.csv
 
 To generate the results in Table 5: compare_forecasts.m is used
 
-To generate the results in Table 4: compare_forecasts.m is used
+## Fixed model and Table 7
+
+forecasting_loop_fixedmodel.m is used to generate the miHAR^F forecasts
+
+Output is written to IBM_mutlireg_fore_fix.csv
+
+To generate the results in Table 7: compare_forecasts.m is used
+
+
