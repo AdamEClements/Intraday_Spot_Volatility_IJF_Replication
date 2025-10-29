@@ -1,0 +1,191 @@
+---
+title: "IBM HAC based plots"
+author: "Daniel P. A. Preve"
+format: html
+---
+
+## Import
+
+```{r}
+library(dplyr)
+library(readr)
+
+OLS_estimates <- read_csv("IBM_OLS_estimates.csv")
+glimpse(OLS_estimates)
+
+scaled_covars <- read_csv("IBM_robust_scaled_covars.csv")
+glimpse(scaled_covars)
+```
+
+## Wrangle
+
+```{r}
+OLS_estimates <- OLS_estimates |>
+  rename(
+    b_0 = betas_1, 
+    b_1 = betas_2, b_2 = betas_3, b_3 = betas_4, 
+    b_5 = betas_5, b_6 = betas_6, b_7 = betas_7
+  ) |>
+  mutate(Interval = 1:78, b_123_sum = b_1+b_2+b_3, b_567_sum = b_5+b_6+b_7) |>
+  select(Interval, b_0, b_123_sum, b_567_sum)
+  
+
+covars <- scaled_covars |> 
+  mutate(across(everything(), ~ . / 1e6))
+#glimpse(covars)
+
+HAC_SE_b_0 <- numeric(78)
+HAC_SE_b_123_sum <- numeric(78)
+HAC_SE_b_567_sum <- numeric(78)
+s <- seq(1, 540, by = 7) ### EDITED, CHECK
+
+c <- 1
+for (i in s) {
+    HAC_SE_b_0[c] <- sqrt(covars$covar_robust_1[i])
+    HAC_SE_b_123_sum[c] <- sqrt(
+      covars$covar_robust_2[i+1] + covars$covar_robust_3[i+2] + covars$covar_robust_4[i+3] +
+      2*covars$covar_robust_2[i+2] + 2*covars$covar_robust_2[i+3] + 2*covars$covar_robust_3[i+3]  
+    )
+    HAC_SE_b_567_sum[c] <- sqrt(
+      covars$covar_robust_5[i+4] + covars$covar_robust_6[i+5] + covars$covar_robust_7[i+6] +
+      2*covars$covar_robust_5[i+5] + 2*covars$covar_robust_5[i+6] + 2*covars$covar_robust_6[i+6]  
+    )
+    c <- c + 1
+}
+
+HAC_SEs <- data.frame(HAC_SE_b_0, HAC_SE_b_123_sum, HAC_SE_b_567_sum) |>
+  mutate(Interval = 1:78)
+
+DF <- OLS_estimates |>
+  left_join(HAC_SEs, by = "Interval")
+glimpse(DF)
+```
+
+## Visualize
+
+### Plot 1
+
+```{r}
+library(ggplot2)
+
+p_1 <- DF |>
+  ggplot(aes(x = Interval, y = b_0)) +
+  geom_point(
+    aes(shape = "b_0"), 
+    size = 1.0, 
+    alpha = 0.8
+  ) +
+  geom_errorbar(
+    aes(ymin = b_0 - 1.96 * HAC_SE_b_0, ymax = b_0 + 1.96 * HAC_SE_b_0),   # 1.645  
+    width = 0.5
+  ) +
+  geom_ribbon(
+    aes(ymin = b_0 - 1.96 * HAC_SE_b_0, ymax = b_0 + 1.96 * HAC_SE_b_0),
+    fill = "#56B4E9",
+    alpha = 0.2
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype = "solid"
+  ) +
+  scale_x_continuous(
+    limits = c(0, 79),   
+    breaks = c(12, 24, 36, 48, 60, 72)  
+  ) +
+  scale_x_continuous(
+    limits = c(0, 79),  
+    breaks = c(12, 24, 36, 48, 60, 72)  
+  ) +
+  scale_shape_manual(
+    values = c("b_0" = 15),  
+    labels = expression(hat(beta)[paste(i, ",", 0)])  
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.text = element_text(size = 12),
+    legend.position = "top"
+  ) +
+  labs(
+    shape = NULL,  
+    x = NULL,  
+    y = NULL
+  )
+
+p_1
+```
+
+### Plot 2
+
+```{r}
+p_2 <- DF |>
+  ggplot(aes(x = Interval)) +
+  geom_point(
+    aes(y = b_123_sum, shape = "b_123_sum"), 
+    size = 1.0,
+    alpha = 0.8
+  ) +
+  geom_errorbar(
+    aes(ymin = b_123_sum - 1.96 * HAC_SE_b_123_sum, ymax = b_123_sum + 1.96 * HAC_SE_b_123_sum),  # 1.645 
+    width = 0.5
+  ) +
+  geom_ribbon(
+    aes(ymin = b_123_sum - 1.96 * HAC_SE_b_123_sum, ymax = b_123_sum + 1.96 * HAC_SE_b_123_sum),
+    fill = "#B97FB4",
+    alpha = 0.2
+  ) +
+  geom_point(
+    aes(y = b_567_sum, shape = "b_567_sum"), 
+    size = 1.0,
+    alpha = 0.8
+  ) +
+  geom_errorbar(
+    aes(ymin = b_567_sum - 1.96 * HAC_SE_b_567_sum, ymax = b_567_sum + 1.96 * HAC_SE_b_567_sum),  # 1.645 
+    width = 0.5
+  ) +
+  geom_ribbon(
+    aes(ymin = b_567_sum - 1.96 * HAC_SE_b_567_sum, ymax = b_567_sum + 1.96 * HAC_SE_b_567_sum),
+    fill = "#F5A623",
+    alpha = 0.2
+  ) +
+  geom_hline(
+    yintercept = 0,
+    linetype = "solid"
+  ) +
+  scale_x_continuous(
+    limits = c(0, 79),  
+    breaks = c(12, 24, 36, 48, 60, 72)  
+  ) +
+  scale_shape_manual(
+    values = c(
+      "b_123_sum" = 16, 
+      "b_567_sum" = 17
+    ),
+    labels = c(
+      expression(hat(beta)[paste(i, ",", 1)] + hat(beta)[paste(i, ",", 2)] + hat(beta)[paste(i, ",", 3)]),
+      expression(hat(beta)[paste(i, ",", 5)] + hat(beta)[paste(i, ",", 6)] + hat(beta)[paste(i, ",", 7)])
+    )  
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.text = element_text(size = 12),
+    legend.position = "top"
+  ) +
+  labs(
+    shape = NULL,  
+    x = "Interval",  
+    y = NULL
+  )
+
+p_2
+```
+
+### Combined Plots
+
+```{r}
+library(patchwork)
+
+combined_plot <- (p_1 / p_2)
+combined_plot
+```
+
+
