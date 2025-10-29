@@ -1,0 +1,124 @@
+---
+title: "LASSO results"
+author: "Daniel P. A. Preve"
+format: html
+---
+
+## Import
+
+```{r}
+library(dplyr)
+library(readr)
+
+component_1 <- read_csv("component_1.csv")
+
+#glimpse(component_1)
+
+component_2 <- read_csv("component_2.csv")
+
+#glimpse(component_2)
+
+component_3 <- read_csv("component_3.csv")
+
+#glimpse(component_3)
+```
+
+## Wrangle
+
+```{r}
+library(tidyr)
+
+DF_1 <- component_1 |>
+  rename_with(~ as.character(seq_along(.)), everything()) |>
+  mutate(row = row_number())  |>
+  pivot_longer(
+    cols = -row,                  
+    names_to = "column",          
+    values_to = "selected_predictors"              
+  ) |>
+  mutate(column = as.numeric(column))
+
+#View(DF_1)
+
+DF_2 <- component_2 |>
+  rename_with(~ as.character(seq_along(.)), everything()) |>
+  mutate(row = row_number())  |>
+  pivot_longer(
+    cols = -row,                  
+    names_to = "column",          
+    values_to = "selected_predictors"              
+  ) |>
+  mutate(column = as.numeric(column))
+
+#View(DF_2)
+
+DF_3 <- component_3 |>
+  rename_with(~ as.character(seq_along(.)), everything()) |>
+  mutate(row = row_number())  |>
+  pivot_longer(
+    cols = -row,                  
+    names_to = "column",          
+    values_to = "selected_predictors"              
+  ) |>
+  mutate(column = as.numeric(column))
+
+#View(DF_3)
+```
+
+## Visualize
+
+### Plot 1
+
+```{r}
+library(ggplot2)
+
+p_1 <- DF_1 |>
+  ggplot(aes(x = column, y = row, fill = selected_predictors)) +
+  geom_tile() +
+  scale_x_continuous(limits = c(0, 79), breaks = c(12, 24, 36, 48, 60, 72)) +
+  scale_y_continuous(limits = c(0, 4767), breaks= c(1000, 2000, 3000, 4000)) +
+  scale_fill_distiller(palette = "Greens", direction = 1) +
+  theme_minimal(base_size = 14) +
+  labs(title = "Daily", x = NULL, y = "Window", fill = "Selected Predictors \n(LASSO)") 
+
+p_1
+```
+
+### Plot 2
+
+```{r}
+p_2 <- DF_2 |>
+  ggplot(aes(x = column, y = row, fill = factor(selected_predictors, levels = c(1, 0)))) +
+  geom_tile() +
+  scale_x_continuous(limits = c(0, 79), breaks = c(12, 24, 36, 48, 60, 72)) +
+  scale_y_continuous(limits = c(0, 4767), breaks= c(1000, 2000, 3000, 4000)) +
+  scale_fill_manual(values = c("1" = "#08306B", "0" = "#F7FBFF"), name = "Selected Predictors \n(LASSO)") +
+  theme_minimal(base_size = 14) +
+  labs(title = "Overnight", x = NULL, y = "Window") 
+
+p_2
+```
+
+### Plot 3
+
+```{r}
+p_3 <- DF_3 |>
+  ggplot(aes(x = column, y = row, fill = selected_predictors)) +
+  geom_tile() +
+  scale_x_continuous(limits = c(0, 79), breaks = c(12, 24, 36, 48, 60, 72)) +
+  scale_y_continuous(limits = c(0, 4767), breaks= c(1000, 2000, 3000, 4000)) +
+  scale_fill_distiller(palette = "Reds", direction = 1) +
+  theme_minimal(base_size = 14) +
+  labs(title = "Intraday", x = "Interval", y = "Window", fill = "Selected Predictors \n(LASSO)") 
+
+p_3
+```
+
+### Combined Plots
+
+```{r}
+library(patchwork)
+
+combined_plot <- (p_1 / p_2 / p_3)
+combined_plot
+```
