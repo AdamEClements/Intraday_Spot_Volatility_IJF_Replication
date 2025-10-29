@@ -1,0 +1,135 @@
+---
+title: "SACF plots"
+author: "Daniel P. A. Preve"
+format: html
+---
+
+## Import
+
+```{r}
+library(dplyr)
+library(readr)
+
+SACFs <- read_csv("SACFs.csv")
+glimpse(SACFs)
+```
+
+## Wrangle
+
+```{r}
+SACFs <- SACFs |>
+  rename(
+    OK_SACF = y, miHAR_residuals_SACF = mi, diHAR_residuals_SACF = di,
+    liGBM_residuals_SACF = gbm, LSTM_residuals_SACF = lstm
+  ) |>
+  mutate(Lag = 1:780)
+
+glimpse(SACFs)
+```
+
+## Visualize
+
+### Plot 1
+
+```{r}
+library(ggplot2)
+
+p_1 <- SACFs |>
+  ggplot(aes(x = Lag, y = OK_SACF, color = "OK")) +  
+  geom_point(size = 1.0, alpha = 0.8, shape = 16) +  # Solid circle
+  geom_hline(yintercept = 0, linewidth = 0.25, linetype = "solid") +
+  scale_x_continuous(
+    limits = c(0, 780),  
+    breaks = c(78, 156, 234, 312, 390, 468, 546, 624, 702, 780),
+    labels = c("", "", "", "", "", "", "", "", "", "")
+  ) +
+  scale_y_continuous(
+    limits = c(-0.05, 0.8),  
+    breaks = c(0.0, 0.2, 0.4, 0.6, 0.8)  
+  ) +
+  scale_color_manual(values = c("OK" = "#B97FB4"), name = "Estimator") + 
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "top") +
+  labs(
+    x = NULL,  
+    y = "SAC"
+  )
+
+p_1
+```
+
+### Plot 2
+
+```{r}
+library(ggplot2)
+
+p_2 <- SACFs |>
+  ggplot(aes(x = Lag)) +
+  geom_point(
+    aes(y = miHAR_residuals_SACF, color = "miHAR", shape = "miHAR"), 
+    size = 1.0, 
+    alpha = 0.8 
+  ) +  
+  geom_point(
+    aes(y = diHAR_residuals_SACF, color = "diHAR", shape = "diHAR"), 
+    size = 1.0, 
+    alpha = 0.8  
+  ) +  
+  geom_point(
+    aes(y = liGBM_residuals_SACF, color = "liGBM", shape = "liGBM"), 
+    size = 0.75,
+    alpha = 0.8  
+  ) +  
+  geom_point(
+    aes(y = LSTM_residuals_SACF, color = "LSTM", shape = "LSTM"), 
+    size = 0.75,
+    alpha = 0.8  
+  ) +  
+  geom_hline(
+    yintercept = 0,
+    linewidth = 0.25,
+    linetype = "solid"
+  ) +
+  scale_x_continuous(
+    limits = c(0, 780),  
+    breaks = c(78, 156, 234, 312, 390, 468, 546, 624, 702, 780),
+    labels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+  ) +
+  scale_y_continuous(
+    limits = c(-0.05, 0.15),  
+    breaks = c(-0.05, 0.0, 0.05, 0.1, 0.15)  
+  ) +
+  scale_color_manual(
+    values = c("miHAR" = "#56B4E9", 
+               "diHAR" = "#A3D29A", 
+               "liGBM" = "#F5A623", 
+               "LSTM" = "#E15759"),
+    name = "Model"
+  ) +
+  scale_shape_manual(
+    values = c("miHAR" = 16,  # Solid circle
+               "diHAR" = 1,   # Hollow circle
+               "liGBM" = 2,  # Hollow triangle
+               "LSTM" = 17),   # Solid triangle
+    name = "Model"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "top") +
+  labs(
+    x = NULL,  
+    y = "SAC"
+  )
+
+p_2
+```
+
+### Combined Plots
+
+```{r}
+library(patchwork)
+
+combined_plot <- (p_1 / p_2)
+combined_plot
+```
+
+
