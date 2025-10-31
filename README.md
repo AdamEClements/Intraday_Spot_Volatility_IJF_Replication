@@ -1,7 +1,6 @@
-# Intraday_Spot_Volatility_IJF_Replication
-For replicating the IBM results for 'Modeling and Forecasting Intraday Spot Volatility'
+# Replicating the IBM Results for “Modeling and Forecasting Intraday Spot Volatility”
 
-Each section below relates to sets of results in the paper. There is a folder in the repository (with the same name as each section) that contains the relevant data, code and output.
+Each section below corresponds to sets of results presented in the paper. For each section, there is a folder in this repository — with the same name as the section — containing the relevant data, code, and output.
 
 ## Data
 Raw data file: IBM.N5MinuteOHLC.csv
