@@ -4,22 +4,16 @@ Each section below corresponds to sets of results presented in the paper. For ea
 
 ## Data
 
-- Raw data file: IBM.N5MinuteOHLC.csv
-- Use `sort_5minute_data.m` (tested in MATLAB R2024b) to filter the raw 5-minute data
-- The output for the 5-minute OK volatility is saved as `IBM_5minvol_Win.mat` for use in subsequent MATLAB code
-- The 5-minute OK volatility is also stored in `IBM_ok.csv`
+- Raw data file: `IBM.N5MinuteOHLC.csv`.
+- Use `sort_5minute_data.m` (tested in MATLAB R2024b) to filter the raw 5-minute data.
+- The output for the 5-minute OK volatility is saved as `IBM_5minvol_Win.mat` for use in subsequent MATLAB code.
+- The 5-minute OK volatility is also stored in `IBM_ok.csv`.
 
 ## In-sample and Figure 1
 
-intravol_model.m provides the full sample estimation results.
-
-intravol_model.m uses IBM_5minvol_Win.mat
-
-Writes out coefficient estimates (IBM_OLS_estimates.csv) and robust covariance matrix 
-(IBM_robust_scaled_covars.csv) to produce Figure 1
-
-These files are used in the R code in IBM_HAC_based_plots.qmd to generate Figure 1
-IBM_HAC_based_plots.qmd needs the dplyr readr libraries.
+- `intravol_model.m` provides the full-sample estimation results.
+- It uses `IBM_5minvol_Win.mat` as input and computes the parameter estimates (`IBM_OLS_estimates.csv`) and the robust covariance matrix (`IBM_robust_scaled_covars.csv`), which are used to create Figure 1.
+- These output files are then used in the R code `IBM_HAC_based_plots.qmd` to generate Figure 1. The R script requires the `dplyr` and `readr` packages.
 
 ## Residual ACF plots in Figure 2
 
