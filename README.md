@@ -3,13 +3,11 @@
 Each section below corresponds to sets of results presented in the paper. For each section, there is a folder in this repository — with the same name as the section — containing the relevant data, code, and output.
 
 ## Data
-Raw data file: IBM.N5MinuteOHLC.csv
 
-Use sort_5minute_data.m (used Matlab 2024b) to filter the raw 5-minute data
-
-Output for the 5-minute OK volatility is written to IBM_5minvol_Win.mat to use in subsequent Matlab code
-
-5-minute OK volatility is laos stored in IBM_ok.csv
+- Raw data file: IBM.N5MinuteOHLC.csv
+- Use `sort_5minute_data.m` (tested in MATLAB R2024b) to filter the raw 5-minute data
+- The output for the 5-minute OK volatility is saved as `IBM_5minvol_Win.mat` for use in subsequent MATLAB code
+- The 5-minute OK volatility is also stored in `IBM_ok.csv`
 
 ## In-sample and Figure 1
 
