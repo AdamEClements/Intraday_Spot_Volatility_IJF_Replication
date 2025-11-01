@@ -128,16 +128,10 @@ To generate the results in Table 7: compare_forecasts.m is used
 To select which predictors to include, modify the following section of the code:
 
 <pre>
-```matlab
 % Set whether to use daily lags or overnight volatility
 useday = 1;
 usenight = 0;
-```
 </pre>
-
-> % Set whether to use daily lags or overnight volatility
-> useday = 1; 
-> usenight = 0;
 
 The output file name will automatically update as follows:
 
