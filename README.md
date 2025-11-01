@@ -144,6 +144,26 @@ The output is written to `IBM_multireg_di_fore.csv`.
 
 To generate the results in Table 5, use `compare_forecasts.m`.
 
+## LASSO and Table 6 and Figure 5
+
+forecasting_loop_fullLASSO_CV.m is used to generate the miHAR^L forecasts
+
+Output is written to IBM_mutlireg_fore_LASSO_CV.csv
+
+Given the computational burden of the CV the parallel processing is used
+
+To generate the results in Table 6: compare_forecasts.m is used
+
+forecasting_loop_fullLASSO_CV.m also writes out the number of significant predictors for:
+
+daily predictors to component_1.csv
+
+overnight predictor to component_2.csv
+
+intraday predictors to component_3.csv
+
+LASSO_results.qmd uses these three files to generate Figure 5
+
 ## Fixed Model and Table 7
 
 `forecasting_loop_fixedmodel.m` is used to generate the miHAR$^{F}$ forecasts.
