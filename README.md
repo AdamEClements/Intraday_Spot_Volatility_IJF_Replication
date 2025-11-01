@@ -95,7 +95,7 @@ To generate the results in Table 2: compare_log_forecasts.m is used
 `intravol_model_noonight.m` is used to generate the in-sample estimation results for the $miHAR$ model, excluding overnight volatility.
 It computes the parameters estimates (`IBM_OLS_estimates.csv`) and robust covariance matrix (`IBM_robust_scaled_covars.csv`) for producing Figure 4.
 
-These files are then used in the R code `IBM_HAC_based_plots.qmd` to generate Figure 4. This code requires the `dplyr` and `readr` packages.
+These files are then used in `IBM_HAC_based_plots.qmd` to generate Figure 4. The `.qmd` file requires the `dplyr` and `readr` packages.
 
 ### Forecasting (No Overnight Volatility)
 
