@@ -123,22 +123,19 @@ To generate the results in Table 7: compare_forecasts.m is used
 
 ## Simpler models and Table 8
 
-forecasting_loop_simpler.m is used to generate the forecasts for the different versions of the simpler models
+`forecasting_loop_simpler.m` is used to generate forecasts for the different versions of the simpler models.
 
-To choose the predictors to include need to change the code below 
+To select which predictors to include, modify the following section of the code:
 
-% Set whether to use daily lags or overnight volatility
+> % Set whether to use daily lags or overnight volatility
+> useday = 1; 
+> usenight = 0;
 
-useday = 1;
-usenight = 0;
+The output file name will automatically update as follows:
 
-The output file name will automatically update to give
+- `IBM_multireg_fore_simple_0_0.csv` — $miHAR^I$ forecasts
+- `IBM_multireg_fore_simple_0_1.csv` — $miHAR^{OI}$ forecasts
+- `IBM_multireg_fore_simple_1_0.csv` — $miHAR^{DI}$ forecasts
 
-IBM_multireg_fore_simple_0_0.csv which is the miHAR^I forecast
-
-IBM_multireg_fore_simple_0_1.csv which is the miHAR^OI forecast
-
-IBM_multireg_fore_simple_1_0.csv which is the miHAR^DI forecast
-
-To generate the results in Table 8: compare_forecasts.m is used
+To generate the results in Table 8, use `compare_forecasts.m`.
 
