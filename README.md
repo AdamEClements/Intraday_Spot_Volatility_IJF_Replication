@@ -15,6 +15,30 @@ Each section below corresponds to sets of results presented in the paper. For ea
 - It uses `IBM_5minvol_Win.mat` as input and computes the parameter estimates (`IBM_OLS_estimates.csv`) and the robust covariance matrix (`IBM_robust_scaled_covars.csv`).
 - These output files are then used in `IBM_HAC_based_plots.qmd` to produce Figure 1. The `.qmd` file requires the `dplyr` and `readr` R packages.
 
+## Forecasting results and Table 1
+
+forecasting_loop.m generates the forecasts for the miHAR and diHAR models 
+
+uses IBM_5minvol_Win.mat
+
+Output is written to IBM_fore.csv (contains target, miHAR and diHAR)
+
+LSTM: forecasts genrated from forecasting_loop_LSTM.m (loss ratios for LSTM forecasts differ marginally from those reported in Table 1 when the LSTM forecasts are run again)
+
+liGBM: forecasts generated from gbm_rolling.py
+
+gbm_rolling.py uses IBM_ok.csv and output is written to IBM_gbm_fore.csv (contains target and gbm forecast)
+
+packages are in requirements.txt
+
+To generate the results in Table 1: compare_forecasts.m is used
+
+Model Confidence Set requires the MFE Toolbox by Kevin Sheppard (https://www.mathworks.com/matlabcentral/fileexchange/170381-mfe-toolbox-kevin-sheppard)
+
+Generates the loss ratios reported in Table 1
+
+Generates the MCS p-values to show which forecasts are included in the MCS (p-values > 0.1) as denoted by a * in Table 1
+
 ## Residual ACF Plots in Figure 2
 
 ### Residual Files
