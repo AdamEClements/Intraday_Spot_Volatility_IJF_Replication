@@ -115,11 +115,10 @@ To generate the results in Table 5: compare_forecasts.m is used
 
 ## Fixed model and Table 7
 
-forecasting_loop_fixedmodel.m is used to generate the miHAR^F forecasts
+`forecasting_loop_fixedmodel.m` is used to generate the $miHAR^{F}$ forecasts.
+The output is written to `IBM_multireg_fore_fix.csv`.
 
-Output is written to IBM_mutlireg_fore_fix.csv
-
-To generate the results in Table 7: compare_forecasts.m is used
+To generate the results in Table 7, use `compare_forecasts.m`.
 
 ## Simpler models and Table 8
 
