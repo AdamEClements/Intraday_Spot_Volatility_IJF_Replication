@@ -2,6 +2,8 @@
 
 Each section below corresponds to sets of results presented in the paper. For each section, there is a folder in this repository — with the same name as the section — containing the relevant data, code, and output.
 
+Corresponding author: a.clements@qut.edu.au
+
 ## Data
 
 - **Raw data file:** `IBM.N5MinuteOHLC.csv`.
