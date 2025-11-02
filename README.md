@@ -24,7 +24,7 @@ The output is written to `IBM_fore.csv`, which contains the target and the miHAR
 
 **liGBM:** Forecasts are generated using `gbm_rolling.py`. `gbm_rolling.py` uses `IBM_ok.csv` as input and writes the output to `IBM_gbm_fore.csv`, which contains the target and the liGBM forecasts. The required Python libraries are listed in `requirements.txt`.
 
-To generate the results in Table 1, use `compare_forecasts.m`. The Model Confidence Set (MCS) procedure requires the [MFE Toolbox by Kevin Sheppard](https://www.mathworks.com/matlabcentral/fileexchange/170381-mfe-toolbox-kevin-sheppard)
+To generate the results in Table 1, use `compare_forecasts.m`. The Model Confidence Set (MCS) procedure requires the [MFE Toolbox by Kevin Sheppard](https://www.mathworks.com/matlabcentral/fileexchange/170381-mfe-toolbox-kevin-sheppard).
 
 `compare_forecasts.m`:
 
