@@ -55,6 +55,8 @@ To generate the results in Table 1, use `compare_forecasts.m`. The Model Confide
 - `forecasting_log_loop.m` uses `IBM_5minvol_Win.mat` and produces the logarithmic miHAR and diHAR forecasts. Output is written to `IBM_multireg_fore_log.csv`.
 - `IBM_gbm_fore_log.py` uses `IBM_ok.csv` and writes the output to `IBM_gbm_fore_log.csv`.
 - `forecasting_log_loop_LSTM.m` generates the log-LSTM forecasts and writes the output to `IBM_lstm_fore_log.csv`.
+- `compare_log_forecasts.m' generates the results in Table 2
+
 
 ## Multi-step Forecasts and Table 3
 
