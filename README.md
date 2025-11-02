@@ -15,29 +15,21 @@ Each section below corresponds to sets of results presented in the paper. For ea
 - It uses `IBM_5minvol_Win.mat` as input and computes the parameter estimates (`IBM_OLS_estimates.csv`) and the robust covariance matrix (`IBM_robust_scaled_covars.csv`).
 - These output files are then used in `IBM_HAC_based_plots.qmd` to produce Figure 1. The `.qmd` file requires the `dplyr` and `readr` R packages.
 
-## Forecasting results and Table 1
+## Forecasting Results and Table 1
 
-forecasting_loop.m generates the forecasts for the miHAR and diHAR models 
+`forecasting_loop.m` generates forecasts for the miHAR and diHAR models using `IBM_5minvol_Win.mat`.
+The output is written to `IBM_fore.csv`, which contains the target and the miHAR and diHAR forecasts.
 
-uses IBM_5minvol_Win.mat
+**LSTM:** Forecasts are generated using `forecasting_loop_LSTM.m`. (Note: Loss ratios for the LSTM forecasts may differ slightly from those reported in Table 1 when re-run.)
 
-Output is written to IBM_fore.csv (contains target, miHAR and diHAR)
+**liGBM:** Forecasts are generated using `gbm_rolling.py`. `gbm_rolling.py` uses `IBM_ok.csv` as input and writes the output to `IBM_gbm_fore.csv`, which contains the target and the liGBM forecasts. The required Python libraries are listed in `requirements.txt`.
 
-LSTM: forecasts genrated from forecasting_loop_LSTM.m (loss ratios for LSTM forecasts differ marginally from those reported in Table 1 when the LSTM forecasts are run again)
+To generate the results in Table 1, use `compare_forecasts.m`. The Model Confidence Set (MCS) procedure requires the [MFE Toolbox by Kevin Sheppard](https://www.mathworks.com/matlabcentral/fileexchange/170381-mfe-toolbox-kevin-sheppard)
 
-liGBM: forecasts generated from gbm_rolling.py
+`compare_forecasts.m`:
 
-gbm_rolling.py uses IBM_ok.csv and output is written to IBM_gbm_fore.csv (contains target and gbm forecast)
-
-packages are in requirements.txt
-
-To generate the results in Table 1: compare_forecasts.m is used
-
-Model Confidence Set requires the MFE Toolbox by Kevin Sheppard (https://www.mathworks.com/matlabcentral/fileexchange/170381-mfe-toolbox-kevin-sheppard)
-
-Generates the loss ratios reported in Table 1
-
-Generates the MCS p-values to show which forecasts are included in the MCS (p-values > 0.1) as denoted by a * in Table 1
+- Generates the loss ratios reported in Table 1.
+- Computes the MCS $p$-values, which identify the forecasts included in the MCS ($p$-values > 0.1), as denoted by an asterisk (*) in Table 1.
 
 ## Residual ACF Plots in Figure 2
 
@@ -129,11 +121,11 @@ The same naming convention applies to the liGBM and LSTM forecast files.
 `intravol_model_noonight.m` is used to generate the in-sample estimation results for the miHAR model, excluding overnight volatility.
 It computes the parameters estimates (`IBM_OLS_estimates.csv`) and robust covariance matrix (`IBM_robust_scaled_covars.csv`) for producing Figure 4.
 
-These files are then used in `IBM_HAC_based_plots.qmd` to generate Figure 4. The `.qmd` file requires the `dplyr` and `readr` packages.
+These files are then used in `IBM_HAC_based_plots.qmd` to produce Figure 4. The `.qmd` file requires the `dplyr` and `readr` packages.
 
 ### Forecasting (No Overnight Volatility)
 
-`forecasting_loop.m` produces the miHAR$^{*}$ forecasts. The forecasts are written to `IBM_fore_nonight.csv`.
+`forecasting_loop.m` produces the $miHAR^{*}$ forecasts. The forecasts are written to `IBM_fore_nonight.csv`.
 
 To generate the results in Table 4, use `compare_forecasts.m`.
 
@@ -146,27 +138,24 @@ To generate the results in Table 5, use `compare_forecasts.m`.
 
 ## LASSO and Table 6 and Figure 5
 
-forecasting_loop_fullLASSO_CV.m is used to generate the miHAR^L forecasts
+`forecasting_loop_fullLASSO_CV.m` is used to generate the $miHAR^{L}$ forecasts.
+The output is written to `IBM_multireg_fore_LASSO_CV.csv`.
 
-Output is written to IBM_mutlireg_fore_LASSO_CV.csv
+Given the computational burden of cross-validation (CV), parallel processing is used.
 
-Given the computational burden of the CV the parallel processing is used
+To generate the results in Table 6, use `compare_forecasts.m`.
 
-To generate the results in Table 6: compare_forecasts.m is used
+`forecasting_loop_fullLASSO_CV.m` also writes out the number of significant predictors to the following files:
 
-forecasting_loop_fullLASSO_CV.m also writes out the number of significant predictors for:
+- Daily predictors to `component_1.csv`.
+- Overnight predictor to `component_2.csv`.
+- Intraday predictors to `component_3.csv`.
 
-daily predictors to component_1.csv
-
-overnight predictor to component_2.csv
-
-intraday predictors to component_3.csv
-
-LASSO_results.qmd uses these three files to generate Figure 5
+`LASSO_results.qmd` uses these three files to produce Figure 5.
 
 ## Fixed Model and Table 7
 
-`forecasting_loop_fixedmodel.m` is used to generate the miHAR$^{F}$ forecasts.
+`forecasting_loop_fixedmodel.m` is used to generate the $miHAR^{F}$ forecasts.
 The output is written to `IBM_multireg_fore_fix.csv`.
 
 To generate the results in Table 7, use `compare_forecasts.m`.
@@ -185,9 +174,9 @@ usenight = 0;
 
 The output file name will automatically update as follows:
 
-- `IBM_multireg_fore_simple_0_0.csv` — miHAR$^I$ forecasts
-- `IBM_multireg_fore_simple_0_1.csv` — miHAR$^{OI}$ forecasts
-- `IBM_multireg_fore_simple_1_0.csv` — miHAR$^{DI}$ forecasts
+- `IBM_multireg_fore_simple_0_0.csv` — $miHAR^{I}$ forecasts
+- `IBM_multireg_fore_simple_0_1.csv` — $miHAR^{OI}$ forecasts
+- `IBM_multireg_fore_simple_1_0.csv` — $miHAR^{DI}$ forecasts
 
 To generate the results in Table 8, use `compare_forecasts.m`.
 
