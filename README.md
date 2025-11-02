@@ -1,6 +1,6 @@
 # Replicating the IBM Results for “Modeling and Forecasting Intraday Spot Volatility”
 
-Each section below corresponds to sets of results presented in the paper. For each section, there is a folder in this repository — with the same name as the section — containing the relevant data, code, and output.
+Each section below corresponds to sets of results presented in the paper. For each section, there is a folder in this repository — with the same name as the section — containing the relevant data, code, and output. The results have bee checked on a machine running Windows 11 Enterprise (with 12th Gen Intel Core i7-12700 2.10 GHz).
 
 Corresponding author: a.clements@qut.edu.au
 
