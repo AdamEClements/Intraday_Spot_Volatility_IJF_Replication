@@ -29,7 +29,7 @@ To generate the results in Table 1, use `compare_forecasts.m`. The Model Confide
 `compare_forecasts.m`:
 
 - Generates the loss ratios reported in Table 1.
-- Computes the MCS $p$-values, which identify the forecasts included in the MCS ($p$-values > 0.1), as denoted by an asterisk (*) in Table 1.
+- Computes the MCS $p$-values, which identify the forecasts included in the MCS ($p$-values > 0.1), as denoted by an asterisk ($*$) in Table 1.
 
 ## Residual ACF Plots in Figure 2
 
